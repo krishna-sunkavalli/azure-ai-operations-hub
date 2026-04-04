@@ -1,0 +1,34 @@
+# Build outputs
+*.bak
+*.bkp
+
+# Workbook backups (local dev only)
+*.backup-*.json
+
+# Local dev scripts
+fix-workbook*.ps1
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Editor
+.vscode/
+*.code-workspace
+*.swp
+*.swo
+*~
+
+# PowerShell
+*.psm1.bak
+
+# Environment / credentials
+.env
+.env.local
+.env.*.local
+
+# Scratch / dev files
+deploy-body.json
+fetched*.json
+wb-*.json
+test-query.kql
