@@ -22,6 +22,8 @@ An [Azure Monitor Workbook](https://learn.microsoft.com/azure/azure-monitor/visu
 | **Model Requests by Model Name** | Bar chart of model-level request volumes |
 | **Resource Inventory** | Table with Name, Resource Group, Kind, SKU, Location, Public Access, Provisioning State, and Diagnostic Settings status |
 
+For the complete list of every panel, query, and metric across all 9 tabs, see [docs/queries.md](docs/queries.md).
+
 ### Parameters
 
 | Parameter | Default | Description |
@@ -90,7 +92,8 @@ New-AzResourceGroupDeployment `
 │   ├── azure-ai-monitor.workbook    # The Azure Workbook (source of truth)
 │   └── azuredeploy.json             # ARM template for one-click deployment
 ├── docs/
-│   └── OVERVIEW.md                  # Detailed tab and query reference
+│   ├── OVERVIEW.md                  # Detailed tab and query reference
+│   └── queries.md                   # Full inventory of every panel query & metric
 ├── scripts/
 │   └── build-arm-template.ps1       # Regenerate ARM template from workbook
 ├── .github/
