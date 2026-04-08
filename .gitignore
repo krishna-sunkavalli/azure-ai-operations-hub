@@ -4,6 +4,7 @@
 
 # Workbook backups (local dev only)
 *.backup-*.json
+azure-ai-monitor.workbook.json
 
 # Local dev scripts
 fix-workbook*.ps1
