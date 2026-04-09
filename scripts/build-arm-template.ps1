@@ -9,7 +9,7 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$WorkbookPath = (Join-Path $PSScriptRoot '..\workbook\azure-ai-monitor.workbook'),
+    [string]$WorkbookPath = (Join-Path $PSScriptRoot '..\workbook\az-aiops-dashboard.workbook'),
     [string]$OutputPath   = (Join-Path $PSScriptRoot '..\workbook\azuredeploy.json')
 )
 
@@ -34,14 +34,14 @@ $arm = @"
   "`$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "metadata": {
-    "description": "Deploys the Azure AI Operations Hub workbook to Azure Monitor.",
+    "description": "Deploys the AZ AIOps Dashboard workbook to Azure Monitor.",
     "author": "krishna-sunkavalli",
     "version": "1.0.0"
   },
   "parameters": {
     "workbookDisplayName": {
       "type": "string",
-      "defaultValue": "Azure AI Operations Hub",
+      "defaultValue": "AZ AIOps Dashboard",
       "metadata": {
         "description": "Display name for the Azure Workbook"
       }

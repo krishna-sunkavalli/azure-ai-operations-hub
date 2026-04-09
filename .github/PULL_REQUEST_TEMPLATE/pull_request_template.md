@@ -12,7 +12,7 @@
 
 ## Checklist
 
-- [ ] Workbook JSON is valid: `python -c "import json; json.load(open('workbook/azure-ai-monitor.workbook'))"`
+- [ ] Workbook JSON is valid: `python -c "import json; json.load(open('workbook/az-aiops-dashboard.workbook'))"`
 - [ ] ARM template regenerated: `.\scripts\build-arm-template.ps1`
 - [ ] ARM template is valid JSON: `python -c "import json; json.load(open('workbook/azuredeploy.json'))"`
 - [ ] Tested in Azure Portal with at least one real Cognitive Services resource

@@ -18,7 +18,7 @@ jobs:
 
       - name: Validate workbook JSON
         run: |
-          python3 -c "import json; json.load(open('workbook/azure-ai-monitor.workbook')); print('workbook JSON: valid')"
+          python3 -c "import json; json.load(open('workbook/az-aiops-dashboard.workbook')); print('workbook JSON: valid')"
 
       - name: Validate ARM template JSON
         run: |
@@ -39,7 +39,7 @@ jobs:
         run: |
           python3 << 'EOF'
           import json
-          wb_standalone = json.load(open('workbook/azure-ai-monitor.workbook'))
+          wb_standalone = json.load(open('workbook/az-aiops-dashboard.workbook'))
           arm = json.load(open('workbook/azuredeploy.json'))
           wb_embedded = json.loads(arm['resources'][0]['properties']['serializedData'])
           assert json.dumps(wb_standalone, sort_keys=True) == json.dumps(wb_embedded, sort_keys=True), \

@@ -1,4 +1,4 @@
-# Contributing to Azure AI Operations Hub
+# Contributing to AZ AIOps Dashboard
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
 
@@ -8,7 +8,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ### Reporting Issues
 
-- Search [existing issues](https://github.com/krishna-sunkavalli/azure-ai-operations-hub/issues) first
+- Search [existing issues](https://github.com/krishna-sunkavalli/az-aiops-dashboard/issues) first
 - Use the appropriate issue template (bug report or feature request)
 - Include as much detail as possible
 
@@ -19,7 +19,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 3. Make your changes
 4. Validate the workbook JSON is valid:
    ```bash
-   python -c "import json; json.load(open('workbook/azure-ai-monitor.workbook'))"
+   python -c "import json; json.load(open('workbook/az-aiops-dashboard.workbook'))"
    ```
 5. If you modified the workbook, regenerate `azuredeploy.json`:
    ```powershell
@@ -35,7 +35,7 @@ To add a new visualization to the workbook:
 
 1. Edit the workbook in **Azure Portal** → Monitor → Workbooks (edit mode)
 2. Export the updated workbook JSON via Advanced Editor (`</>`)
-3. Replace the contents of `workbook/azure-ai-monitor.workbook` with the exported JSON
+3. Replace the contents of `workbook/az-aiops-dashboard.workbook` with the exported JSON
 4. Regenerate the ARM template: `.\scripts\build-arm-template.ps1`
 5. Update `docs/OVERVIEW.md` with the new section description
 
@@ -72,7 +72,7 @@ After creating the repo on GitHub, configure the following **branch protection r
 
 ```powershell
 # Validate workbook JSON
-python -c "import json; json.load(open('workbook/azure-ai-monitor.workbook')); print('OK')"
+python -c "import json; json.load(open('workbook/az-aiops-dashboard.workbook')); print('OK')"
 
 # Rebuild ARM template
 .\scripts\build-arm-template.ps1

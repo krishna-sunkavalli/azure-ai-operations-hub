@@ -1,6 +1,6 @@
 # Workbook Overview
 
-Detailed reference for each section of the Azure AI Operations Hub workbook.
+Detailed reference for each section of the AZ AIOps Dashboard workbook.
 
 ## Overview Tab
 

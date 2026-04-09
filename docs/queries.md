@@ -1,6 +1,6 @@
 # Query & Metric Inventory
 
-Complete inventory of every panel in the Azure AI Operations Hub workbook, organized by tab.
+Complete inventory of every panel in the AZ AIOps Dashboard workbook, organized by tab.
 
 > **Legend — Query Type:**
 > | Abbreviation | Meaning |

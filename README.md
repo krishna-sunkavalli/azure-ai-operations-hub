@@ -1,11 +1,11 @@
-# Azure AI Operations Hub
+# AZ AIOps Dashboard
 
-[![Validate](https://github.com/krishna-sunkavalli/azure-ai-operations-hub/actions/workflows/validate.yml/badge.svg)](https://github.com/krishna-sunkavalli/azure-ai-operations-hub/actions/workflows/validate.yml)
+[![Validate](https://github.com/krishna-sunkavalli/az-aiops-dashboard/actions/workflows/validate.yml/badge.svg)](https://github.com/krishna-sunkavalli/az-aiops-dashboard/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 An [Azure Monitor Workbook](https://learn.microsoft.com/azure/azure-monitor/visualize/workbooks-overview) for day-to-day operational monitoring of Azure AI and Cognitive Services resources. Track request volumes, status codes, availability, model usage, and resource inventory — all in one shareable dashboard with no agents, no code, and no external dependencies.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkrishna-sunkavalli%2Fazure-ai-operations-hub%2Fmain%2Fworkbook%2Fazuredeploy.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkrishna-sunkavalli%2Faz-aiops-dashboard%2Fmain%2Fworkbook%2Fazuredeploy.json)
 
 <!-- TODO: Add screenshot — save as docs/screenshot.png -->
 
@@ -46,7 +46,7 @@ For the complete list of every panel, query, and metric across all 9 tabs, see [
 Click the **Deploy to Azure** button above, or use the direct link:
 
 ```
-https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkrishna-sunkavalli%2Fazure-ai-operations-hub%2Fmain%2Fworkbook%2Fazuredeploy.json
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkrishna-sunkavalli%2Faz-aiops-dashboard%2Fmain%2Fworkbook%2Fazuredeploy.json
 ```
 
 ### Option 2: Azure CLI
@@ -57,7 +57,7 @@ az group create --name rg-ai-ops-hub --location eastus
 az deployment group create \
   --resource-group rg-ai-ops-hub \
   --template-file workbook/azuredeploy.json \
-  --parameters workbookDisplayName="Azure AI Operations Hub"
+  --parameters workbookDisplayName="AZ AIOps Dashboard"
 ```
 
 ### Option 3: Azure PowerShell
@@ -68,14 +68,14 @@ New-AzResourceGroup -Name "rg-ai-ops-hub" -Location "eastus"
 New-AzResourceGroupDeployment `
   -ResourceGroupName "rg-ai-ops-hub" `
   -TemplateFile "workbook/azuredeploy.json" `
-  -workbookDisplayName "Azure AI Operations Hub"
+  -workbookDisplayName "AZ AIOps Dashboard"
 ```
 
 ### Option 4: Manual Import
 
 1. Open **Azure Portal** → **Monitor** → **Workbooks**
 2. Click **+ New** → **Advanced Editor** (`</>` icon)
-3. Paste the contents of [`workbook/azure-ai-monitor.workbook`](workbook/azure-ai-monitor.workbook)
+3. Paste the contents of [`workbook/az-aiops-dashboard.workbook`](workbook/az-aiops-dashboard.workbook)
 4. Click **Apply** → **Done Editing** → **Save**
 
 ## Using the Workbook
@@ -89,7 +89,7 @@ New-AzResourceGroupDeployment `
 
 ```
 ├── workbook/
-│   ├── azure-ai-monitor.workbook    # The Azure Workbook (source of truth)
+│   ├── az-aiops-dashboard.workbook   # The Azure Workbook (source of truth)
 │   └── azuredeploy.json             # ARM template for one-click deployment
 ├── docs/
 │   ├── OVERVIEW.md                  # Detailed tab and query reference
