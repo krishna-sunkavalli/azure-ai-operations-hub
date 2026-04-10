@@ -7,6 +7,7 @@ Complete inventory of every panel in the AZ AIOps Dashboard workbook, organized 
 > |---|---|
 > | KQL | Kusto Query Language — runs against a Log Analytics workspace (`AzureMetrics` table) |
 > | ARG | Azure Resource Graph — cross-subscription resource query |
+> | ARM | ARM REST API — direct Azure Resource Manager call (`queryType: 12`, `ARMEndpoint/1.0`) |
 > | Metrics | Azure Monitor Metrics — native platform metric charts |
 
 ---
@@ -96,23 +97,23 @@ Complete inventory of every panel in the AZ AIOps Dashboard workbook, organized 
 
 | Panel Name | Title | Type | Query / Metrics |
 |---|---|---|---|
-| table-capacity-summary | Deployment Capacity Summary | ARG | `Resources \| where type =~ 'microsoft.cognitiveservices/accounts/deployments' \| extend ParentAccount = tostring(split(id, '/')[8]) \| project DeploymentName = name, ParentAccount, ResourceGroup = resourceGroup, Model = tostring(properties.model.name), ModelVersion = tostring(properties.model.version), SKU = tostring(sku.name), ['Capacity (K TPM)'] = toint(sku.capacity), ScaleType = tostring(properties.scaleSettings.scaleType), ProvisioningState = tostring(properties.provisioningState) \| order by ParentAccount asc, DeploymentName asc` |
-| chart-capacity-by-model | Capacity Allocation by Model (K TPM) | ARG | `Resources \| where type =~ 'microsoft.cognitiveservices/accounts/deployments' \| project Model = tostring(properties.model.name), Capacity = toint(sku.capacity) \| summarize ['Total K TPM'] = sum(Capacity) by Model \| order by ['Total K TPM'] desc` |
-| chart-capacity-by-sku | Capacity Allocation by SKU Type | ARG | `Resources \| where type =~ 'microsoft.cognitiveservices/accounts/deployments' \| project SKU = tostring(sku.name), Capacity = toint(sku.capacity) \| summarize ['Total K TPM'] = sum(Capacity) by SKU` |
+| table-capacity-summary | Deployment Capacity Summary | ARM | `GET {CogServicesResource}/deployments?api-version=2024-10-01` · JSONPath `$.value[*]` → DeploymentName, Model, ModelVersion, SKU, Capacity, ProvisioningState |
+| chart-capacity-by-model | Capacity Allocation by Model (K TPM) | ARM | `GET {CogServicesResource}/deployments?api-version=2024-10-01` · JSONPath `$.value[*]` → Model, Capacity |
+| chart-capacity-by-sku | Capacity Allocation by SKU Type | ARM | `GET {CogServicesResource}/deployments?api-version=2024-10-01` · JSONPath `$.value[*]` → SKU, Capacity |
 | chart-capacity-token-throughput | Token Throughput by Deployment (Actual Usage) | Metrics | **TokenTransaction** · Sum · Split by ModelDeploymentName |
 | chart-capacity-throttled | Throttled vs Total Requests by Deployment | Metrics | **AzureOpenAIRequests** · Sum · Split by ModelDeploymentName ("Total Requests"), **RatelimitedCalls** · Sum · Split by ModelDeploymentName ("Rate-Limited 429") |
-| table-capacity-by-account | Capacity by Account (Aggregate) | ARG | `Resources \| where type =~ 'microsoft.cognitiveservices/accounts/deployments' \| extend ParentAccount = tostring(split(id, '/')[8]) \| project ParentAccount, DeploymentName = name, Model = tostring(properties.model.name), SKU = tostring(sku.name), ['Capacity (K TPM)'] = toint(sku.capacity) \| summarize Deployments = count(), ['Total K TPM'] = sum(['Capacity (K TPM)']) by ParentAccount \| order by ['Total K TPM'] desc` |
-| table-capacity-model-sku | Capacity by Model + SKU Breakdown | ARG | `Resources \| where type =~ 'microsoft.cognitiveservices/accounts/deployments' \| project Model = tostring(properties.model.name), SKU = tostring(sku.name), ['Capacity (K TPM)'] = toint(sku.capacity), ScaleType = tostring(properties.scaleSettings.scaleType) \| summarize Deployments = count(), ['Total K TPM'] = sum(['Capacity (K TPM)']) by Model, SKU, ScaleType \| order by ['Total K TPM'] desc` |
+| table-capacity-by-account | Capacity by Account (Aggregate) | ARM | `GET {CogServicesResource}/deployments?api-version=2024-10-01` · JSONPath `$.value[*]` → ParentAccount, DeploymentName, Model, SKU, Capacity |
+| table-capacity-model-sku | Capacity by Model + SKU Breakdown | ARM | `GET {CogServicesResource}/deployments?api-version=2024-10-01` · JSONPath `$.value[*]` → Model, SKU, Capacity, ScaleType |
 
 ## Inventory
 
 | Panel Name | Title | Type | Query / Metrics |
 |---|---|---|---|
 | table-cog-resources | Cognitive Services Resources | ARG | `Resources \| where type =~ 'microsoft.cognitiveservices/accounts' \| project ResourceName = name, ResourceGroup = resourceGroup, Kind = tostring(kind), SKU = tostring(sku.name), Location = location, Endpoint = tostring(properties.endpoint), CustomDomain = tostring(properties.customSubDomainName), PublicAccess = tostring(properties.publicNetworkAccess), ProvisioningState = tostring(properties.provisioningState), SubscriptionId = subscriptionId \| order by ResourceName asc` |
-| table-model-deployments | Model Deployments | ARG | `Resources \| where type =~ 'microsoft.cognitiveservices/accounts/deployments' \| project DeploymentName = name, ParentResource = tostring(split(id, '/')[8]), ResourceGroup = resourceGroup, Model = tostring(properties.model.name), Version = tostring(properties.model.version), Format = tostring(properties.model.format), SKU = tostring(sku.name), Capacity = tostring(sku.capacity), ScaleType = tostring(properties.scaleSettings.scaleType), ProvisioningState = tostring(properties.provisioningState) \| order by ParentResource asc, DeploymentName asc` |
+| table-model-deployments | Model Deployments | ARM | `GET {CogServicesResource}/deployments?api-version=2024-10-01` · JSONPath `$.value[*]` → DeploymentName, Model, Version, Format, SKU, Capacity, ScaleType, ProvisioningState |
 | table-private-endpoints | Private Endpoints — AI / Cognitive Services | ARG | `Resources \| where type =~ 'microsoft.network/privateendpoints' \| mv-expand connection = properties.privateLinkServiceConnections \| where tostring(connection.properties.privateLinkServiceId) contains 'cognitiveservices' \| project PrivateEndpoint = name, ResourceGroup = resourceGroup, Location = location, LinkedResource = tostring(split(tostring(connection.properties.privateLinkServiceId), '/')[8]), ConnectionState = tostring(connection.properties.privateLinkServiceConnectionState.status) \| order by LinkedResource asc` |
-| table-diagnostic-settings | Model Deployments — Full Detail | ARG | `Resources \| where type =~ 'microsoft.cognitiveservices/accounts/deployments' \| project DeploymentName = name, ParentAccount = tostring(split(id, '/')[8]), ResourceGroup = resourceGroup, Model = tostring(properties.model.name), Version = tostring(properties.model.version), Format = tostring(properties.model.format), SKU = tostring(sku.name), Capacity = tostring(sku.capacity), ScaleType = tostring(properties.scaleSettings.scaleType), ProvisioningState = tostring(properties.provisioningState) \| order by ParentAccount asc, DeploymentName asc` |
+| table-diagnostic-settings | Model Deployments — Full Detail | ARM | `GET {CogServicesResource}/deployments?api-version=2024-10-01` · JSONPath `$.value[*]` → DeploymentName, ParentAccount, Model, Version, Format, SKU, Capacity, ScaleType, ProvisioningState |
 
 ---
 
-**Totals:** 64 panels — 13 KQL · 14 ARG · 37 Azure Monitor Metrics
+**Totals:** 64 panels — 13 KQL · 7 ARG · 7 ARM REST · 37 Azure Monitor Metrics
